@@ -126,12 +126,12 @@ def open_simulation_page(root):
     root.configure(bg="#1e1f22")
 
     def add_styled_label(parent, text):
-        return Label(parent, text=text.upper(), font=("Segoe UI", 9, "bold"), bg="#292b2e", fg="#04e2ff")
+        return Label(parent, text=text.upper(), font=("Segoe UI", 10, "bold"), bg="#292b2e", fg="#04e2ff")
 
     container = Frame(root, bg="#292b2e", padx=20, pady=20)
     container.pack(pady=25)
 
-    title = Label(root, text="MEMORY ALLOCATION VISUALIZER", font=("Segoe UI", 14, "bold"),
+    title = Label(root, text="MEMORY ALLOCATION VISUALIZER", font=("Segoe UI", 15, "bold"),
                   fg="#04e2ff", bg="#1e1f22")
     title.pack(pady=5)
 
@@ -174,29 +174,38 @@ def open_simulation_page(root):
 def main():
     root = tk.Tk()
     root.title("Memory Allocation Visualizer")
-    root.geometry("500x500")
+    root.geometry("520x580")
     root.configure(bg="#1e1f22")
 
-    title = Label(root, text="MEMORY ALLOCATION VISUALIZER", font=("Segoe UI", 16, "bold"),
+    title = Label(root, text="MEMORY ALLOCATION VISUALIZER", font=("Segoe UI", 17, "bold"),
                   fg="#04e2ff", bg="#1e1f22")
     title.pack(pady=20)
 
     intro_frame = Frame(root, bg="#292b2e", padx=20, pady=20, relief="ridge", bd=3)
     intro_frame.pack(padx=30, pady=10)
 
-    Label(intro_frame, text="📘 Paging Definition:", font=("Segoe UI", 11, "bold"),
+    Label(intro_frame, text="📘 Paging Definition:", font=("Segoe UI", 12, "bold"),
           fg="#04e2ff", bg="#292b2e").pack(anchor="w", pady=(0, 5))
     Label(intro_frame,
           text="Paging divides memory into fixed-size blocks (pages and frames) "
                "to eliminate external fragmentation.",
-          wraplength=400, justify="left", fg="white", bg="#292b2e").pack(anchor="w")
+          wraplength=440, justify="left", fg="white", bg="#292b2e", font=("Segoe UI", 10)).pack(anchor="w")
 
-    Label(intro_frame, text="\n📗 Segmentation Definition:", font=("Segoe UI", 11, "bold"),
+    Label(intro_frame, text="\n📗 Segmentation Definition:", font=("Segoe UI", 12, "bold"),
           fg="#04e2ff", bg="#292b2e").pack(anchor="w", pady=(10, 5))
     Label(intro_frame,
           text="Segmentation divides memory into variable-sized segments "
                "based on logical divisions like code, stack, and data.",
-          wraplength=400, justify="left", fg="white", bg="#292b2e").pack(anchor="w")
+          wraplength=440, justify="left", fg="white", bg="#292b2e", font=("Segoe UI", 10)).pack(anchor="w")
+
+    # 🟢 NEW SECTION: What this project does
+    Label(intro_frame, text="\n🎯 Project Objective:", font=("Segoe UI", 12, "bold"),
+          fg="#04e2ff", bg="#292b2e").pack(anchor="w", pady=(10, 5))
+    Label(intro_frame,
+          text="This project visually demonstrates how memory is managed in an operating system "
+               "using Paging and Segmentation techniques. Users can input memory size, process data, "
+               "and instantly visualize how pages and segments are allocated in real-time.",
+          wraplength=440, justify="left", fg="white", bg="#292b2e", font=("Segoe UI", 10)).pack(anchor="w")
 
     Button(root, text="NEXT ➜", font=("Segoe UI", 12, "bold"),
            bg="#04e2ff", fg="black", width=12, command=lambda: open_simulation_page(root)).pack(pady=30)
