@@ -76,8 +76,4 @@ python memory_visualizer.py
 -   Paging graph and FREE block visualization
 -   Segmentation memory map + Table printed on terminal
 
-------------------------------------------------------------------------
 
-## Author
-
-**Umesh --- OS Mini Project**
