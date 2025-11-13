@@ -5,12 +5,11 @@ import numpy as np
 
 
 # -----------------------------------------------------------
-# ✅ INPUT PARSER (Supports unlimited segmentation processes)
+# ✅ INPUT PARSER
 # -----------------------------------------------------------
 def parse_inputs(total_memory_entry, num_processes_entry, process_sizes_entry, page_size_entry, segment_sizes_entry):
     try:
         total_memory = int(total_memory_entry.get())
-
         num_processes = int(num_processes_entry.get())
         process_sizes = [int(x.strip()) for x in process_sizes_entry.get().split(',')]
 
@@ -71,7 +70,7 @@ def visualize_paging(total_memory, num_processes, process_sizes, page_size):
 
 
 # -----------------------------------------------------------
-# ✅ SEGMENTATION VISUALIZATION (UNLIMITED PROCESSES)
+# ✅ SEGMENTATION VISUALIZATION
 # -----------------------------------------------------------
 def visualize_segmentation(total_memory, num_processes, segment_sizes):
     fig, ax = plt.subplots(figsize=(11, 3))
@@ -116,11 +115,13 @@ def visualize_segmentation(total_memory, num_processes, segment_sizes):
 
 
 # -----------------------------------------------------------
-# ✅ MODERN GUI INTERFACE DESIGN
+# ✅ SECOND PAGE (Main Simulation Interface)
 # -----------------------------------------------------------
-def main():
-    root = tk.Tk()
-    root.title("Memory Allocation Visualizer")   # ✅ Header Text Updated
+def open_simulation_page(root):
+    for widget in root.winfo_children():
+        widget.destroy()
+
+    root.title("Memory Allocation Visualizer")
     root.geometry("480x550")
     root.configure(bg="#1e1f22")
 
@@ -130,7 +131,6 @@ def main():
     container = Frame(root, bg="#292b2e", padx=20, pady=20)
     container.pack(pady=25)
 
-    # ✅ GUI title changed here
     title = Label(root, text="MEMORY ALLOCATION VISUALIZER", font=("Segoe UI", 14, "bold"),
                   fg="#04e2ff", bg="#1e1f22")
     title.pack(pady=5)
@@ -166,6 +166,40 @@ def main():
 
     Button(root, text="START SIMULATION", font=("Segoe UI", 11, "bold"),
            bg="#04e2ff", fg="black", width=20, command=start_simulation).pack(pady=15)
+
+
+# -----------------------------------------------------------
+# ✅ FIRST PAGE (Project Intro & Definitions)
+# -----------------------------------------------------------
+def main():
+    root = tk.Tk()
+    root.title("Memory Allocation Visualizer")
+    root.geometry("500x500")
+    root.configure(bg="#1e1f22")
+
+    title = Label(root, text="MEMORY ALLOCATION VISUALIZER", font=("Segoe UI", 16, "bold"),
+                  fg="#04e2ff", bg="#1e1f22")
+    title.pack(pady=20)
+
+    intro_frame = Frame(root, bg="#292b2e", padx=20, pady=20, relief="ridge", bd=3)
+    intro_frame.pack(padx=30, pady=10)
+
+    Label(intro_frame, text="📘 Paging Definition:", font=("Segoe UI", 11, "bold"),
+          fg="#04e2ff", bg="#292b2e").pack(anchor="w", pady=(0, 5))
+    Label(intro_frame,
+          text="Paging divides memory into fixed-size blocks (pages and frames) "
+               "to eliminate external fragmentation.",
+          wraplength=400, justify="left", fg="white", bg="#292b2e").pack(anchor="w")
+
+    Label(intro_frame, text="\n📗 Segmentation Definition:", font=("Segoe UI", 11, "bold"),
+          fg="#04e2ff", bg="#292b2e").pack(anchor="w", pady=(10, 5))
+    Label(intro_frame,
+          text="Segmentation divides memory into variable-sized segments "
+               "based on logical divisions like code, stack, and data.",
+          wraplength=400, justify="left", fg="white", bg="#292b2e").pack(anchor="w")
+
+    Button(root, text="NEXT ➜", font=("Segoe UI", 12, "bold"),
+           bg="#04e2ff", fg="black", width=12, command=lambda: open_simulation_page(root)).pack(pady=30)
 
     root.mainloop()
 
