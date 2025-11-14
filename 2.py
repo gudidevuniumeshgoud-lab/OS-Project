@@ -5,7 +5,7 @@ import numpy as np
 
 
 # -----------------------------------------------------------
-# ✅ INPUT PARSER
+# INPUT PARSER
 # -----------------------------------------------------------
 def parse_inputs(total_memory_entry, num_processes_entry, process_sizes_entry, page_size_entry, segment_sizes_entry):
     try:
@@ -32,13 +32,13 @@ def parse_inputs(total_memory_entry, num_processes_entry, process_sizes_entry, p
 
 
 # -----------------------------------------------------------
-# ✅ COMBINED VISUALIZATION (Paging + Segmentation)
+# COMBINED VISUALIZATION (Paging + Segmentation)
 # -----------------------------------------------------------
 def visualize_combined(total_memory, num_processes, process_sizes, page_size, segment_sizes):
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(11, 6))
     fig.suptitle("Memory Allocation: Paging vs Segmentation", fontsize=14, fontweight="bold")
 
-    # ---- Paging Visualization ----
+    # Paging
     frames = total_memory // page_size
     memory = np.zeros(frames, dtype=int)
     frame_idx = 0
@@ -64,7 +64,7 @@ def visualize_combined(total_memory, num_processes, process_sizes, page_size, se
     ax1.set_xlim(0, frames)
     ax1.set_ylim(0, 1)
 
-    # ---- Segmentation Visualization ----
+    # Segmentation
     ax2.set_title("Segmentation (Variable-sized Blocks)")
     ax2.set_xlabel("Memory Address Space (Base → Limit)")
     current_address = 0
@@ -74,7 +74,8 @@ def visualize_combined(total_memory, num_processes, process_sizes, page_size, se
             if current_address + seg_size > total_memory:
                 break
             ax2.add_patch(
-                plt.Rectangle((current_address, 0), seg_size, 1, edgecolor="black", facecolor=f"C{pid}")
+                plt.Rectangle((current_address, 0), seg_size, 1, edgecolor="black",
+                              facecolor=f"C{pid}")
             )
             ax2.text(current_address + seg_size / 4, 0.35, f"P{pid+1}:S{seg_idx+1}", fontsize=8)
             current_address += seg_size
@@ -94,23 +95,24 @@ def visualize_combined(total_memory, num_processes, process_sizes, page_size, se
 
 
 # -----------------------------------------------------------
-# ✅ SIMULATION PAGE
+# SIMULATION PAGE
 # -----------------------------------------------------------
 def open_simulation_page(root):
     for widget in root.winfo_children():
         widget.destroy()
 
     root.title("Memory Allocation Visualizer")
-    root.geometry("520x640")
-    root.configure(bg="#121212")
+    root.geometry("540x650")
+    root.configure(bg="#101020")
 
     def add_label(parent, text):
-        return Label(parent, text=text, font=("Segoe UI", 10, "bold"), bg="#1E1E1E", fg="#00BFFF")
+        return Label(parent, text=text, font=("Segoe UI", 10, "bold"),
+                     bg="#252545", fg="#6EE7F9")
 
     Label(root, text="MEMORY ALLOCATION VISUALIZER", font=("Segoe UI", 17, "bold"),
-          fg="#00BFFF", bg="#121212").pack(pady=15)
+          fg="#6EE7F9", bg="#101020").pack(pady=15)
 
-    container = Frame(root, bg="#1E1E1E", padx=25, pady=25, relief="ridge", bd=2)
+    container = Frame(root, bg="#252545", padx=25, pady=25, relief="ridge", bd=2)
     container.pack(padx=20, pady=10)
 
     add_label(container, "Total Memory Size (bytes)").pack(anchor="w")
@@ -128,28 +130,28 @@ def open_simulation_page(root):
     add_label(container, "Segmentation (e.g., 100,200;150;300,80)").pack(anchor="w")
     segment_sizes_entry = Entry(container, width=40, font=("Segoe UI", 10)); segment_sizes_entry.pack(pady=5)
 
-    # ---- Simulation Function ----
+    # Simulation function
     def start_simulation():
-        inputs = parse_inputs(total_memory_entry, num_processes_entry, process_sizes_entry, page_size_entry, segment_sizes_entry)
+        inputs = parse_inputs(total_memory_entry, num_processes_entry, process_sizes_entry,
+                              page_size_entry, segment_sizes_entry)
         if inputs:
             total_memory, num_processes, process_sizes, page_size, segment_sizes = inputs
             visualize_combined(total_memory, num_processes, process_sizes, page_size, segment_sizes)
 
-    # Buttons
-    btn_frame = Frame(root, bg="#121212")
+    btn_frame = Frame(root, bg="#101020")
     btn_frame.pack(pady=20)
 
     start_btn = Button(btn_frame, text="🚀 RUN SIMULATION", font=("Segoe UI", 11, "bold"),
-                       bg="#00BFFF", fg="black", width=18, command=start_simulation)
+                       bg="#6EE7F9", fg="black", width=18, command=start_simulation)
     start_btn.grid(row=0, column=0, padx=10)
 
     back_btn = Button(btn_frame, text="⬅ BACK", font=("Segoe UI", 11, "bold"),
-                      bg="#FF6F61", fg="white", width=10, command=lambda: main_page(root))
+                      bg="#8B5CF6", fg="white", width=10, command=lambda: main_page(root))
     back_btn.grid(row=0, column=1, padx=10)
 
 
 # -----------------------------------------------------------
-# ✅ FIRST PAGE (Intro)
+# FIRST PAGE (Intro)
 # -----------------------------------------------------------
 def main_page(root=None):
     if root is None:
@@ -159,32 +161,35 @@ def main_page(root=None):
             widget.destroy()
 
     root.title("Memory Allocation Visualizer")
-    root.geometry("550x620")
-    root.configure(bg="#121212")
+    root.geometry("560x630")
+    root.configure(bg="#101020")
 
     Label(root, text="MEMORY ALLOCATION VISUALIZER", font=("Segoe UI", 18, "bold"),
-          fg="#00BFFF", bg="#121212").pack(pady=20)
+          fg="#6EE7F9", bg="#101020").pack(pady=20)
 
-    intro_frame = Frame(root, bg="#1E1E1E", padx=25, pady=25, relief="ridge", bd=2)
+    intro_frame = Frame(root, bg="#252545", padx=25, pady=25, relief="ridge", bd=2)
     intro_frame.pack(padx=20, pady=10)
 
     Label(intro_frame, text="📘 Paging:", font=("Segoe UI", 12, "bold"),
-          fg="#00BFFF", bg="#1E1E1E").pack(anchor="w")
-    Label(intro_frame, text="Paging divides memory into fixed-size blocks (pages & frames) to reduce external fragmentation.",
-          wraplength=460, justify="left", fg="white", bg="#1E1E1E", font=("Segoe UI", 10)).pack(anchor="w", pady=5)
+          fg="#6EE7F9", bg="#252545").pack(anchor="w")
+    Label(intro_frame,
+          text="Paging divides memory into fixed-size blocks (pages & frames) to reduce external fragmentation.",
+          wraplength=460, justify="left", fg="white", bg="#252545", font=("Segoe UI", 10)).pack(anchor="w", pady=5)
 
     Label(intro_frame, text="\n📗 Segmentation:", font=("Segoe UI", 12, "bold"),
-          fg="#00BFFF", bg="#1E1E1E").pack(anchor="w")
-    Label(intro_frame, text="Segmentation divides memory into variable-sized segments like code, stack, and data.",
-          wraplength=460, justify="left", fg="white", bg="#1E1E1E", font=("Segoe UI", 10)).pack(anchor="w", pady=5)
+          fg="#6EE7F9", bg="#252545").pack(anchor="w")
+    Label(intro_frame,
+          text="Segmentation divides memory into variable-sized segments like code, stack, and data.",
+          wraplength=460, justify="left", fg="white", bg="#252545", font=("Segoe UI", 10)).pack(anchor="w", pady=5)
 
     Label(intro_frame, text="\n🎯 Objective:", font=("Segoe UI", 12, "bold"),
-          fg="#00BFFF", bg="#1E1E1E").pack(anchor="w")
-    Label(intro_frame, text="This project visually compares Paging and Segmentation together — to understand how OS memory allocation differs between fixed and variable block systems.",
-          wraplength=460, justify="left", fg="white", bg="#1E1E1E", font=("Segoe UI", 10)).pack(anchor="w", pady=5)
+          fg="#6EE7F9", bg="#252545").pack(anchor="w")
+    Label(intro_frame,
+          text="This project visually compares Paging and Segmentation to show how OS manages memory differently.",
+          wraplength=460, justify="left", fg="white", bg="#252545", font=("Segoe UI", 10)).pack(anchor="w", pady=5)
 
     next_btn = Button(root, text="NEXT ➜", font=("Segoe UI", 12, "bold"),
-                      bg="#00BFFF", fg="black", width=15, command=lambda: open_simulation_page(root))
+                      bg="#6EE7F9", fg="black", width=15, command=lambda: open_simulation_page(root))
     next_btn.pack(pady=30)
 
     root.mainloop()
